@@ -20,14 +20,19 @@ public class PubsubCloudEventFunction implements CloudEventsFunction {
             // Extract JSON from CloudEvent
             String json = new String(event.getData().toBytes(), StandardCharsets.UTF_8);
             logger.info(json);
-            // Convert JSON to Pubsub
-            MessagePublishedData.Builder builder = MessagePublishedData.newBuilder();
-            JsonFormat.parser().merge(json, builder);
-            MessagePublishedData data = builder.build();
-            logger.info("### CloudEvent Data ###");
-            logger.info(data.getSubscription());
-            logger.info(data.getMessage().getMessageId());
-            logger.info(data.getMessage().getData().toString());
+
+            // Convert JSON to MessagePublishedData that is defined as a protobuf
+            // Unfortunately, this does not work. See this for more details.
+            //
+            //
+            // A better option is to define a POJO myself.
+//            MessagePublishedData.Builder builder = MessagePublishedData.newBuilder();
+//            JsonFormat.parser().merge(json, builder);
+//            MessagePublishedData data = builder.build();
+//            logger.info("### CloudEvent Data ###");
+//            logger.info(data.getSubscription());
+//            logger.info(data.getMessage().getMessageId());
+//            logger.info(data.getMessage().getData().toString());
 
 //            Gson gson = new Gson();
 //            PubSubBody body = gson.fromJson(json, PubSubBody.class);
