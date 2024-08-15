@@ -1,13 +1,10 @@
 package com.bns.hstcld.functions.cloud_event;
 
 import com.google.cloud.functions.CloudEventsFunction;
-import com.google.events.cloud.pubsub.v1.MessagePublishedData;
 import com.google.gson.Gson;
-import com.google.protobuf.util.JsonFormat;
 import io.cloudevents.CloudEvent;
-import io.cloudevents.CloudEventData;
-
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.logging.Logger;
 
 public class PubsubCloudEventFunction implements CloudEventsFunction {
@@ -23,7 +20,7 @@ public class PubsubCloudEventFunction implements CloudEventsFunction {
 
             // Convert JSON to MessagePublishedData that is defined as a protobuf
             // Unfortunately, this does not work. See this for more details.
-            //
+            // https://stackoverflow.com/questions/68490891/google-cloud-platform-push-subscription-sending-duplicate-message-id-fields
             //
             // A better option is to define a POJO myself.
 //            MessagePublishedData.Builder builder = MessagePublishedData.newBuilder();
@@ -34,10 +31,14 @@ public class PubsubCloudEventFunction implements CloudEventsFunction {
 //            logger.info(data.getMessage().getMessageId());
 //            logger.info(data.getMessage().getData().toString());
 
-//            Gson gson = new Gson();
-//            PubSubBody body = gson.fromJson(json, PubSubBody.class);
-
-
+            Gson gson = new Gson();
+            PubSubBody body = gson.fromJson(json, PubSubBody.class);
+            logger.info("### CloudEvent Data ###");
+            logger.info("Subscription: " + body.getSubscription());
+            logger.info("MessageId: " + body.getMessage().getMessageId());
+            logger.info("Payload: " + new String(Base64.getDecoder().decode(body.getMessage().getData())));
+            logger.info("PublishTime: " + body.getMessage().getPublishTime().toString());
         }
     }
 }
+

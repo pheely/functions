@@ -53,7 +53,59 @@ For local test, use [Google Functions Framework](https://github.com/GoogleCloudP
    ```bash
    gcloud functions delete hello-world --region us-east4
    ```
-   
+
+## Cloud Event Driven Functions
+
+`CloudEventsFunction` can be triggered when a cloud event is fired. We need 
+to define a cloud event handler, a class that implements the 
+`CloudEventsFunction` interface.
+
+There is only one method `accept` defined in this interface. The method 
+takes one argument of type of `CloudEvent`. The payload of a `CloudEvent` 
+varies with the event type that triggers the function. It is a JSON object 
+that can be converted into a Protobuf or a POJO. 
+
+To create a Pubsub topic:
+```bash
+gcloud pubsub topics create cloud-function-topic
+```
+
+To deploy the function:
+```bash
+gcloud functions deploy pubsub-function \
+--gen2 \
+--runtime=java17 \ 
+--region=us-east4 \
+--source=. \
+--entry-point=com.bns.hstcld.functions.cloud_event.PubsubCloudEventFunction \
+--memory=512MB \
+--trigger-topic=cloud-function-topic
+```
+
+To trigger the function:
+```bash
+gcloud pubsub topics publish cloud-function-topic --message="Hi Jie"
+```
+
+To check the log:
+```bash
+gcloud functions logs read \
+--gen2 \
+--region=us-east4 \
+--limit=15 
+pubsub-function
+```
+
+To delete the function:
+```bash
+gcloud functions delete pubsub-function --region us-east4
+```
+
+To delete the pubsub topic:
+```bash
+gcloud pubsub topics delete cloud-function-topic
+```
+
 ## Spring Cloud Function Framework
 
 Version: 4.2.0-SNAPSHOT
@@ -61,3 +113,4 @@ Version: 4.2.0-SNAPSHOT
 Modules:
 - org.springframework.cloud:spring-cloud-function-adapter-gcp:4.2.0-SNAPSHOT
 - org.springframework.cloud:spring-cloud-function-context
+
