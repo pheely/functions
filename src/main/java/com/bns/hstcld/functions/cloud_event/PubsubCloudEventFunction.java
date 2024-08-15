@@ -19,6 +19,7 @@ public class PubsubCloudEventFunction implements CloudEventsFunction {
         if (event != null) {
             // Extract JSON from CloudEvent
             String json = new String(event.getData().toBytes(), StandardCharsets.UTF_8);
+            logger.info(json);
             // Convert JSON to Pubsub
             MessagePublishedData.Builder builder = MessagePublishedData.newBuilder();
             JsonFormat.parser().merge(json, builder);
