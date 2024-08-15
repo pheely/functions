@@ -55,6 +55,7 @@ dependencies {
 
     implementation 'com.google.cloud.functions:functions-framework-api:1.0.4'
     implementation 'com.google.code.gson:gson:2.11.0'
+    implementation 'com.google.cloud:google-cloudevent-types:0.8.1'
 
     invoker 'com.google.cloud.functions.invoker:java-function-invoker:1.1.1'
 

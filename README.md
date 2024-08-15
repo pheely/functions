@@ -50,3 +50,11 @@ For local test, use [Google Functions Framework](https://github.com/GoogleCloudP
    ```bash
    gcloud functions delete hello-world --region us-east4
    ```
+   
+## Spring Cloud Function Framework
+
+Version: 4.2.0-SNAPSHOT
+
+Modules:
+- org.springframework.cloud:spring-cloud-function-adapter-gcp:4.2.0-SNAPSHOT
+- org.springframework.cloud:spring-cloud-function-context
