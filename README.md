@@ -19,7 +19,7 @@ For local test, use [Google Functions Framework](https://github.com/GoogleCloudP
    ```bash
    gcloud services enable cloudfunctions.googleapis.com
    gcloud services enable run.googleapis.com
-   gcloud service artifactregistry.googleapis.com
+   gcloud services enable artifactregistry.googleapis.com
    gcloud functions deploy hello-world \
    --gen2 \
    --runtime=java17 \
@@ -36,13 +36,16 @@ For local test, use [Google Functions Framework](https://github.com/GoogleCloudP
 3. Test GET
     ```bash
     URL=$(gcloud functions  describe hello-world --region=us-east4 --format="value(url)")
-    curl "$URL/?name=jenny" -w '\n'
+    curl "$URL/?name=jenny" \
+    -H "Authorization: Bearer $(gcloud auth print-identity-token)" \
+    -w '\n'
     ```
 4. Test POST
    ```bash
    URL=$(gcloud functions  describe hello-world --region=us-east4 --format="value(url)")
    curl  $URL \
    -H 'Content-Type: application/json' \
+   -H "Authorization: Bearer $(gcloud auth print-identity-token)" \
    -d "{"name": "Jie"}" \
    -w '\n'
    ```
@@ -58,3 +61,4 @@ Version: 4.2.0-SNAPSHOT
 Modules:
 - org.springframework.cloud:spring-cloud-function-adapter-gcp:4.2.0-SNAPSHOT
 - org.springframework.cloud:spring-cloud-function-context
+=======
