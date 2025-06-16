@@ -144,3 +144,4 @@ Modules:
 - org.springframework.cloud:spring-cloud-function-adapter-gcp:4.2.0-SNAPSHOT
 - org.springframework.cloud:spring-cloud-function-context
 
+
