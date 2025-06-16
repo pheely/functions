@@ -5,10 +5,31 @@
  * For more detailed information on multi-project builds, please refer to https://docs.gradle.org/8.3/userguide/building_swift_projects.html in the Gradle documentation.
  */
 
-plugins {
-    // Apply the foojay-resolver plugin to allow automatic download of JDKs
-    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.4.0'
+
+
+pluginManagement {
+    repositories {
+        maven {
+            url "${artifactory_contextUrl}/ext-release-maven-cache"
+            credentials {
+                username = artifactory_user
+                password = artifactory_password
+            }
+        }
+        maven {
+            url "${artifactory_contextUrl}/ext-release-camunda-public-cache"
+            credentials {
+                username = artifactory_user
+                password = artifactory_password
+            }
+        }
+    }
 }
+
+//plugins {
+//    // Apply the foojay-resolver plugin to allow automatic download of JDKs
+//    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.4.0'
+//}
 
 rootProject.name = 'functions'
 include('lib')
